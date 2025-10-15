@@ -7,7 +7,13 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "dev": "bash dev-start.sh",
+    "dev:setup": "bash dev-setup.sh",
+    "dev:kill": "powershell.exe -Command \"Get-Process -Name node -ErrorAction SilentlyContinue | Where-Object { (Get-NetTCPConnection -OwningProcess $_.Id -ErrorAction SilentlyContinue).LocalPort -eq 8081 } | Stop-Process -Force; Write-Host 'Metro killed'\"",
+    "dev:reload": "\"%ANDROID_HOME%\\platform-tools\\adb.exe\" shell input text RR || echo 'Make sure emulator is running'",
+    "dev:menu": "\"%ANDROID_HOME%\\platform-tools\\adb.exe\" shell input keyevent 82 || echo 'Make sure emulator is running'",
+    "dev:clean": "cd android && .\\gradlew.bat clean && cd .. && npm start -- --reset-cache"
   },
   "dependencies": {
     "react": "18.3.1",
