@@ -1,8 +1,8 @@
 #!/bin/bash
-# Keystroke Daily Development Script
+# React Native Daily Development Script
 # Run this each time you want to start developing
 
-echo "🎹 Starting Keystroke development..."
+echo "🚀 Starting React Native development..."
 
 # Kill any existing Metro bundler on port 8081
 echo "🧹 Cleaning up old Metro instances..."
@@ -24,13 +24,31 @@ fi
 
 echo "🚀 Starting Metro bundler..."
 echo ""
-echo "Metro will start now. After it's ready:"
-echo "  - Press 'a' to run on Android"
-echo "  - Press 'r' to reload"
-echo "  - Press 'j' to open DevTools"
-echo "  - Press 'd' to open Dev Menu"
+
+# Start Metro in background
+npm start &
+METRO_PID=$!
+
+echo "⏳ Waiting for Metro to be ready..."
+# Wait for Metro to start (check if port 8081 is listening)
+for i in {1..30}; do
+  if netstat -an | grep -q ":8081.*LISTENING" 2>/dev/null || \
+     powershell.exe -Command "Get-NetTCPConnection -LocalPort 8081 -State Listen -ErrorAction SilentlyContinue" 2>/dev/null | grep -q "8081"; then
+    echo "✅ Metro is ready!"
+    break
+  fi
+  sleep 1
+done
+
+echo "🚀 Launching app on Android..."
+npx react-native run-android --no-packager
+
+echo ""
+echo "✅ App launched! Metro commands:"
+echo "  - Press Ctrl+C to stop Metro"
+echo "  - In emulator: Ctrl+M for dev menu, RR to reload"
 echo ""
 
-# Start Metro (foreground - keeps running)
-npm start
+# Keep script running to show Metro logs
+wait $METRO_PID
 

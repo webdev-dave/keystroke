@@ -1,7 +1,8 @@
 {
-  "name": "keystroke_rn_v0_76",
+  "name": "rn-windows-template",
   "version": "0.0.1",
   "private": true,
+  "description": "React Native 0.76 Windows development template with optimized dev workflow",
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -17,9 +18,7 @@
   },
   "dependencies": {
     "react": "18.3.1",
-    "react-native": "0.76.6",
-    "react-native-vision-camera": "^4.7.2",
-    "react-native-worklets-core": "^1.6.2"
+    "react-native": "0.76.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

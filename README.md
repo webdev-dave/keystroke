@@ -1,9 +1,10 @@
-# 🎹 Keystroke - Piano Keyboard Vision App
+# ⚛️ React Native 0.76 Windows Development Template
 
-A React Native mobile app that lets you draw a piano keyboard on paper, point your phone camera at it, and play notes by touching the drawn keys with a bright orange fingertip/glove.
+A production-ready React Native template optimized for Windows development with one-command startup, auto-cleanup, and an optimized dev workflow.
 
-**Target Platform:** Android  
-**Tech Stack:** React Native 0.76.6 (TypeScript), react-native-vision-camera, react-native-worklets-core
+**Target Platform:** Android (iOS ready)  
+**React Native:** 0.76.6 (TypeScript)  
+**OS:** Windows 10/11
 
 ---
 
@@ -23,13 +24,21 @@ chmod +x dev-setup.sh dev-start.sh
 ### Daily Development
 
 ```bash
-# Start everything (auto-kills old Metro, starts emulator if needed)
+# Start everything (auto-kills old Metro, starts emulator, launches app)
 npm run dev
 
-# Or manually:
-# Terminal 1: npm start
-# Terminal 2: npm run android
+# That's it! One command does everything automatically.
 ```
+
+**What `npm run dev` does:**
+
+1. Kills any old Metro instances
+2. Starts Android emulator (if not running)
+3. Starts Metro bundler
+4. Waits for Metro to be ready
+5. Automatically builds and launches the app on Android
+
+**No need to press 'a' or run any other commands!**
 
 ---
 
@@ -58,13 +67,24 @@ npm run dev:clean          # Clean build (nuclear option)
 
 ## 🎯 Development Workflow
 
+### Option 1: All-in-One (Recommended)
+
+1. **Start Everything**: `npm run dev` (does everything automatically)
+2. **Code**: Edit TypeScript/JavaScript files
+3. **Hot Reload**: Save files → changes appear automatically
+
+### Option 2: Manual Control
+
 1. **Start Metro**: `npm start` (keep running in one terminal)
-2. **Build & Install**: `npm run android` (first time or after native changes)
+2. **Build & Install**: `npm run android` (in another terminal)
 3. **Code**: Edit TypeScript/JavaScript files
 4. **Hot Reload**: Save files → changes appear automatically
-5. **Manual Reload**: Double-tap **R** in emulator, or `npm run dev:reload`
-6. **Dev Menu**: Press **Ctrl+M** in emulator, or `npm run dev:menu`
-7. **DevTools**: Press **j** in Metro terminal
+
+### Useful Commands While Developing
+
+- **Manual Reload**: Double-tap **R** in emulator, or `npm run dev:reload`
+- **Dev Menu**: Press **Ctrl+M** in emulator, or `npm run dev:menu`
+- **DevTools**: Press **j** in Metro terminal
 
 ---
 
@@ -77,14 +97,14 @@ npm run dev:clean          # Clean build (nuclear option)
 "$ANDROID_HOME/emulator/emulator.exe" -list-avds
 
 # Start specific emulator
-"$ANDROID_HOME/emulator/emulator.exe" -avd Medium_Phone_API_36.1 &
+"$ANDROID_HOME/emulator/emulator.exe" -avd YOUR_AVD_NAME &
 
 # Check connected devices
 "$ANDROID_HOME/platform-tools/adb.exe" devices
 
 # Restart app
-"$ANDROID_HOME/platform-tools/adb.exe" shell am force-stop com.keystroke_rn_v0_76
-"$ANDROID_HOME/platform-tools/adb.exe" shell am start -n com.keystroke_rn_v0_76/com.keystroke_rn_v0_76.MainActivity
+"$ANDROID_HOME/platform-tools/adb.exe" shell am force-stop com.YOUR_PACKAGE_NAME
+"$ANDROID_HOME/platform-tools/adb.exe" shell am start -n com.YOUR_PACKAGE_NAME/.MainActivity
 ```
 
 ### Debugging
@@ -119,22 +139,16 @@ cd android && ./gradlew clean && cd ..
 
 ## ⚠️ Troubleshooting
 
-### White Screen on App Launch
-
-1. Check `babel.config.js` includes worklets plugin: `plugins: ['react-native-worklets-core/plugin']`
-2. Restart Metro with clean cache: `npm start -- --reset-cache`
-3. Force reload app: `npm run dev:reload` or double-tap **R** in emulator
-
 ### Metro Bundler Crashes
 
-- Already fixed: `metro.config.js` excludes Android build folders
+- **Already fixed**: `metro.config.js` excludes Android build folders
 - If it still crashes, run: `npm run dev:kill` then restart
 
 ### Build Failures
 
 1. Ensure `android/local.properties` exists:
    ```
-   sdk.dir=C:\\Users\\elido\\AppData\\Local\\Android\\Sdk
+   sdk.dir=C:\\Users\\YOUR_USERNAME\\AppData\\Local\\Android\\Sdk
    ```
 2. Clean build: `npm run dev:clean`
 3. Check Android SDK is installed at `%ANDROID_HOME%`
@@ -156,12 +170,19 @@ pkill -f metro
 2. Reload app: `npm run dev:reload`
 3. Restart Metro: Kill it and run `npm start`
 
+### Hot Reload Not Working
+
+1. Check Metro is running and connected
+2. Try manual reload: Double-tap **R** in emulator
+3. Force reload: `npm run dev:reload`
+4. Restart everything: `npm run dev`
+
 ---
 
 ## 📁 Project Structure
 
 ```
-keystroke_rn_v0_76/
+rn-windows-template/
 ├── android/                          # Android native code
 │   ├── app/
 │   │   ├── build.gradle             # App-level Gradle config
@@ -171,7 +192,7 @@ keystroke_rn_v0_76/
 │   ├── build.gradle                 # Project-level Gradle config
 │   └── local.properties             # SDK path (not in git)
 ├── App.tsx                          # Main app component
-├── babel.config.js                  # Babel config (includes worklets plugin)
+├── babel.config.js                  # Babel config
 ├── metro.config.js                  # Metro config (excludes build folders)
 ├── package.json                     # Dependencies & npm scripts
 ├── dev-setup.sh                     # First time setup script
@@ -182,14 +203,6 @@ keystroke_rn_v0_76/
 
 ## 📚 Important Files
 
-### `babel.config.js`
-
-**Must include worklets plugin** for react-native-vision-camera to work:
-
-```js
-plugins: ['react-native-worklets-core/plugin'];
-```
-
 ### `metro.config.js`
 
 Configured to exclude Android build folders (prevents crashes):
@@ -198,20 +211,27 @@ Configured to exclude Android build folders (prevents crashes):
 blockList: [
   /node_modules\/.*\/android\/build\/.*/,
   /node_modules\/.*\/android\/.cxx\/.*/,
+  /android\/app\/build\/.*/,
+  /android\/build\/.*/,
 ];
 ```
 
 ### `android/local.properties`
 
-**Not in git** - contains SDK path:
+**Not in git** - contains SDK path (created by `dev-setup.sh`):
 
 ```
-sdk.dir=C:\\Users\\elido\\AppData\\Local\\Android\\Sdk
+sdk.dir=C:\\Users\\YOUR_USERNAME\\AppData\\Local\\Android\\Sdk
 ```
 
 ### `android/app/src/main/AndroidManifest.xml`
 
-Contains app permissions (camera, etc.)
+Contains app permissions. Add permissions here as needed:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<!-- Add more permissions as needed -->
+```
 
 ---
 
@@ -221,42 +241,71 @@ Contains app permissions (camera, etc.)
 - **Only run `npm run android`** after changing native code (Java/Kotlin/Gradle/manifests)
 - **Use `npm start -- --reset-cache`** after adding/removing npm packages
 - **Git Bash works better** than PowerShell for React Native development
-- **Use npm commands** (`npm run dev`, `npm run dev:*`) - they work in any terminal (PowerShell, Git Bash, CMD)
+- **Use npm commands** (`npm run dev`, `npm run dev:*`) - they work in any terminal
 - **Hot reload is your friend** - most JS/TS changes appear instantly without rebuilding
 
 ---
 
-## 🏗️ What We've Built So Far
+## 🛠️ What Makes This Template Special
 
-- ✅ Fresh React Native 0.76.6 project
-- ✅ react-native-vision-camera installed
-- ✅ react-native-worklets-core configured
-- ✅ Babel plugin for worklets
-- ✅ Metro config optimized
-- ✅ Android local.properties setup
-- ✅ Development scripts (dev-setup.sh, dev-start.sh)
-- ✅ NPM command shortcuts
-- ✅ App successfully running on emulator
+- ✅ **One-command startup** - `npm run dev` does everything
+- ✅ **Auto Metro cleanup** - Kills old instances automatically
+- ✅ **Auto app launch** - No need to press 'a' in Metro
+- ✅ **Optimized Metro config** - Excludes build folders to prevent crashes
+- ✅ **Windows-optimized scripts** - Works with Git Bash on Windows
+- ✅ **Utility commands** - Kill, reload, menu shortcuts
+- ✅ **Clean build command** - Nuclear option when things break
+- ✅ **Production-ready** - TypeScript, ESLint, Jest configured
 
 ---
 
-## 🎯 Next Steps (TODO)
+## 🔗 Customization
 
-1. Configure camera permissions in AndroidManifest.xml
-2. Create basic Camera component using react-native-vision-camera
-3. Add frame processor with orange color detection
-4. Implement orange object tracking algorithm
-5. Choose and install audio library for piano notes
-6. Map detected finger position to keyboard regions (8 zones: C-D-E-F-G-A-B-C)
-7. Play corresponding notes when finger touches each zone
-8. Add visual feedback/overlay showing detection
-9. Performance optimization for real-time processing
+### Update Package Name
+
+1. **Update `package.json`**: Change `name` field
+2. **Update `app.json`**: Change `name` and `displayName`
+3. **Update Android package**: Follow [React Native rename guide](https://reactnative.dev/docs/0.60/upgrading#manual-upgrades)
+
+### Update Emulator Name
+
+In `dev-setup.sh` and `dev-start.sh`, replace `Medium_Phone_API_36.1` with your AVD name:
+
+```bash
+# Find your AVD name
+"$ANDROID_HOME/emulator/emulator.exe" -list-avds
+
+# Update scripts with your AVD name
+```
+
+### Add Native Dependencies
+
+After installing packages with native code:
+
+```bash
+# Install package
+npm install package-name
+
+# Clean cache and rebuild (native changes)
+npm run dev:clean
+npm run android
+```
 
 ---
 
 ## 🔗 Resources
 
 - [React Native Docs](https://reactnative.dev/docs/getting-started)
-- [Vision Camera Docs](https://react-native-vision-camera.com/)
-- [Worklets Core](https://github.com/margelo/react-native-worklets-core)
 - [React Native Troubleshooting](https://reactnative.dev/docs/troubleshooting)
+- [Metro Bundler](https://metrobundler.dev/)
+- [Android Studio Setup](https://reactnative.dev/docs/set-up-your-environment)
+
+---
+
+## 📄 License
+
+This template is free to use for any purpose. No attribution required.
+
+---
+
+**Happy coding! 🚀**
