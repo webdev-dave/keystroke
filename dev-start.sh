@@ -1,8 +1,8 @@
 #!/bin/bash
-# React Native Daily Development Script
+# Keystroke Daily Development Script
 # Run this each time you want to start developing
 
-echo "🚀 Starting React Native development..."
+echo "🎹 Starting Keystroke development..."
 
 # Kill any existing Metro bundler on port 8081
 echo "🧹 Cleaning up old Metro instances..."

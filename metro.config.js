@@ -12,6 +12,8 @@ const config = {
     blockList: [
       /node_modules\/.*\/android\/build\/.*/,
       /node_modules\/.*\/android\/.cxx\/.*/,
+      /android\/app\/build\/.*/,
+      /android\/build\/.*/,
     ],
   },
 };

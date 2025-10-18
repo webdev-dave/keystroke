@@ -1,8 +1,8 @@
 #!/bin/bash
-# React Native Development Setup Script
+# Keystroke Development Setup Script
 # Run this once after cloning or creating the project
 
-echo "⚙️ Setting up React Native development environment..."
+echo "🎹 Setting up Keystroke development environment..."
 
 # 1. Create Android local.properties
 echo "📁 Creating android/local.properties..."
